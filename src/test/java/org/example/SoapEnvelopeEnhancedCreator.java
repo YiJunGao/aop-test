@@ -57,6 +57,8 @@ public class SoapEnvelopeEnhancedCreator implements RequestCreator {
             DOMResult result = new DOMResult();
             transformerHelper.transform(expected, result);
             soapMessage.setDocument((Document) result.getNode());
+            // TODO magic line here for setting envelope to null to reinitialized envelop after document from test is
+            // set
             soapMessage.setSaajMessage(soapMessage.getSaajMessage());
         } catch (TransformerException ex) {
             fail("Could not transform request SOAP envelope to message: " + ex.getMessage());
