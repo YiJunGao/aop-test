@@ -3,7 +3,6 @@ package org.example;
 import java.util.List;
 
 import org.aspect.PersistentAspect;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -44,10 +43,8 @@ public class WsConfig extends WsConfigurerAdapter {
 
     @Override
     public void addInterceptors(List<EndpointInterceptor> interceptors) {
-        // aop not working
-        interceptors.add(new CustomValidatingInterceptor(schema(), config()));
         // aop working
-        // interceptors.add(new CustomValidatingInterceptor(schema(), null));
+        interceptors.add(new CustomValidatingInterceptor(schema()));
     }
 
     @Bean
@@ -61,10 +58,4 @@ public class WsConfig extends WsConfigurerAdapter {
         return persistentAspect;
     }
 
-    @Bean
-    public Object testAop(AppConfig config) {
-        System.out.println("is config aop proxy: " + AopUtils.isAopProxy(config));
-
-        return null;
-    }
 }

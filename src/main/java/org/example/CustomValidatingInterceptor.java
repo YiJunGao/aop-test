@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.support.interceptor.WebServiceValidationException;
 import org.springframework.ws.context.MessageContext;
@@ -15,11 +17,11 @@ import org.xml.sax.SAXParseException;
 
 public class CustomValidatingInterceptor extends PayloadValidatingInterceptor {
 
-    private AppConfig konfigurace;
+    @Autowired
+    private ObjectFactory<AppConfig> konfigurace;
 
-    public CustomValidatingInterceptor(XsdSchema schema, AppConfig konfigurace) {
+    public CustomValidatingInterceptor(XsdSchema schema) {
         setXsdSchema(schema);
-        this.konfigurace = konfigurace;
     }
 
     @Override
