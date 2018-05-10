@@ -3,7 +3,6 @@ package org.example;
 import static org.springframework.ws.test.support.AssertionErrors.fail;
 
 import java.io.IOException;
-import java.net.URI;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
@@ -14,13 +13,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.WebServiceMessageFactory;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
-import org.springframework.ws.test.client.ResponseCreator;
 import org.springframework.ws.test.server.RequestCreator;
 import org.springframework.xml.transform.ResourceSource;
 import org.springframework.xml.transform.TransformerHelper;
 import org.w3c.dom.Document;
 
-public class SoapEnvelopeEnhancedCreator implements RequestCreator, ResponseCreator {
+public class SoapEnvelopeEnhancedCreator implements RequestCreator {
 
     private Source expected;
 
@@ -50,23 +48,6 @@ public class SoapEnvelopeEnhancedCreator implements RequestCreator, ResponseCrea
 //        }       
 //    }
 // @formatter:on
-
-    @Override
-    public WebServiceMessage createResponse(URI uri, WebServiceMessage request, WebServiceMessageFactory messageFactory)
-            throws IOException {
-        WebServiceMessage message = messageFactory.createWebServiceMessage();
-        SaajSoapMessage soapMessage = (SaajSoapMessage) message;
-        try {
-            DOMResult result = new DOMResult();
-            transformerHelper.transform(expected, result);
-            soapMessage.setDocument((Document) result.getNode());
-            // TODO magic line here for setting envelope to null
-            soapMessage.setSaajMessage(soapMessage.getSaajMessage());
-        } catch (TransformerException ex) {
-            fail("Could not transform request SOAP envelope to message: " + ex.getMessage());
-        }
-        return soapMessage;
-    }
 
     @Override
     public WebServiceMessage createRequest(WebServiceMessageFactory messageFactory) throws IOException {
